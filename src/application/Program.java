@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
@@ -13,12 +14,18 @@ public class Program {
 		
 		UserDao userDao = DaoFactory.createUserDao();
 		
-		System.out.print("Find by id: ");
+		/*System.out.print("Find by id: ");
 		int id = sc.nextInt();
 		User user = userDao.findById(id);
-		
 		System.out.println(user);
-
+		*/
+		System.out.print("Find All: \n");
+		List<User> users = userDao.findAll();
+		
+		users.forEach(System.out::println);
+		
+		
+		sc.close();
 	}
 
 }

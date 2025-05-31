@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -50,8 +51,26 @@ public class UserDaoJDBC implements UserDao {
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<User> users = new ArrayList<User>();
+		
+		try {
+			st = conn.prepareStatement("SELECT * FROM users");
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				User user = instantiateUser(rs);
+				users.add(user);
+			}
+			return users;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override
