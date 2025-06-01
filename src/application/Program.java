@@ -28,13 +28,18 @@ public class Program {
 		User user = new User(null, "Joao Gabo", "gugamundi123@gmail.com", "realyeFODA");
 		userDao.insert(user);
 		System.out.println("User inserted!");
-		*/
 		
 		System.out.println("Delete test: ");
 		System.out.print("Enter the id from the user: ");
 		int id = sc.nextInt();
 		userDao.deleteById(id);
 		System.out.println("Delete succesfull");
+		*/
+		
+		System.out.println("Update test: ");
+		User user = new User(7, "Joao", "joaoroma@gmail.com", "joao123");
+		userDao.update(user);
+		System.out.println("Update completed!");
 		
 		sc.close();
 	}
