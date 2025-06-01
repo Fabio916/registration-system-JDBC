@@ -22,13 +22,19 @@ public class Program {
 		List<User> users = userDao.findAll();
 		
 		users.forEach(System.out::println);
-		*/
+		
 		
 		System.out.println("=== Insert implementation ===");
 		User user = new User(null, "Joao Gabo", "gugamundi123@gmail.com", "realyeFODA");
 		userDao.insert(user);
 		System.out.println("User inserted!");
+		*/
 		
+		System.out.println("Delete test: ");
+		System.out.print("Enter the id from the user: ");
+		int id = sc.nextInt();
+		userDao.deleteById(id);
+		System.out.println("Delete succesfull");
 		
 		sc.close();
 	}

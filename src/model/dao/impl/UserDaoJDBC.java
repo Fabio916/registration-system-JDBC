@@ -35,7 +35,7 @@ public class UserDaoJDBC implements UserDao {
 				return user;
 			}
 			return null;
-			
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
@@ -46,21 +46,37 @@ public class UserDaoJDBC implements UserDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			st = conn.prepareStatement("DELETE FROM users WHERE id = ?");
+
+			st.setInt(1, id);
+
+			int rows = st.executeUpdate();
+
+			if (rows == 0) {
+				throw new DbException("Id not exists!");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
 	@Override
 	public List<User> findAll() {
-		
+
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		List<User> users = new ArrayList<User>();
-		
+
 		try {
 			st = conn.prepareStatement("SELECT * FROM users");
 			rs = st.executeQuery();
-			
+
 			while (rs.next()) {
 				User user = instantiateUser(rs);
 				users.add(user);
@@ -79,13 +95,13 @@ public class UserDaoJDBC implements UserDao {
 		PreparedStatement st = null;
 
 		try {
-			st = conn.prepareStatement("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", 
+			st = conn.prepareStatement("INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getEmail());
 			st.setString(3, obj.getPassWord());
-			
+
 			int rowsAffected = st.executeUpdate();
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
@@ -108,7 +124,7 @@ public class UserDaoJDBC implements UserDao {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private User instantiateUser(ResultSet rs) throws SQLException {
 		User user = new User();
 		user.setId(rs.getInt("id"));
